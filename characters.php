@@ -59,8 +59,22 @@ include 'navbar.php';
                 <tbody>
                 <?php
                 $counter = 1;
+
+                /* house kontrolu */
+                $isHouse = false;
+                $house = '';
+                if (isset($_GET['house']) && in_array($_GET['house'],
+                        array('hufflepuff', 'gryffindor', 'ravenclaw', 'slytherin'))) {
+                    $isHouse = true;
+                    $house = strtolower($_GET['house']);
+                }
+
                 foreach ($characterDetails as $detail):
-                    if (isset($_GET['house']) && $_GET['house'] == strtolower($detail['house'])) {
+                    //if (isset($_GET['house']) && $_GET['house'] == strtolower($detail['house'])) {
+                    /* parametre olarak house verilmis ve veridekine esit degilse diger verilere gec */
+                    if ($isHouse && $house != strtolower($detail['house']))
+                        continue;
+
                 ?>
                         <tr>
                             <th scope="row"><?php echo $counter++; ?> </th>
@@ -71,8 +85,9 @@ include 'navbar.php';
                             <td><?php echo $detail['species']; ?></td>
                         </tr>
                 <?php
-                    }
+
                 endforeach;
+
                 ?>
                 </tbody>
             </table>
